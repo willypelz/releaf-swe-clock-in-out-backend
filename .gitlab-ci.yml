@@ -1,0 +1,43 @@
+variables:
+  BRANCH: $CI_COMMIT_REF_SLUG
+  SHORT_SHA: $CI_COMMIT_SHORT_SHA
+  SERVICE_NAME: test-backend
+  GITLAB_IMAGE: $CI_REGISTRY_IMAGE/${SERVICE_NAME}
+
+stages:
+  - build
+  - test
+  - deploy
+  - clean
+
+build:
+  # Official docker image.
+  image: docker:latest
+  stage: build
+  services:
+    - docker:dind
+  variables:
+    DOCKER_DRIVER: overlay2
+    DOCKER_HOST: tcp://docker:2376
+    # Use TLS https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#tls-enabled
+    DOCKER_TLS_CERTDIR: "/certs"
+
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+    - docker pull "$GITLAB_IMAGE:latest" || true
+  script:
+    # Build and Push the Image
+    - docker build -t "$GITLAB_IMAGE:$SHORT_SHA" -t "$GITLAB_IMAGE:latest" --cache-from "$GITLAB_IMAGE:latest"  .
+    - docker push "$GITLAB_IMAGE:$SHORT_SHA"
+    - docker push $GITLAB_IMAGE:latest
+
+test:
+  image: "$GITLAB_IMAGE:latest"
+  stage: test
+  script:
+    - ls
+    - echo testing
+
+
+
+

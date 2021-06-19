@@ -1,0 +1,15 @@
+version: '3'
+services:
+  app:
+    container_name: clock_in_out_backend
+    restart: always
+    build: .
+    ports:
+      - '3000:3000'
+    external_links:
+      - database
+  database:
+    container_name: clock_in_out_database
+    image: mongo
+    ports:
+      - '27017:27017'
