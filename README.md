@@ -1,8 +1,9 @@
 # Releaf SWE clock-in-out backend application.
-Application that has an API Client + Server using Node using the REST architecture.
+
+Application that consume a API Client to ensure clock in and out of users 
+
 1.  code architecture implemented repository design pattern,
-2.  database: MongoDB
-3.  API: rest
+3.  State Management: Vuex
 4.  Test-driven development(TDD): mocha
 5.  Request validation: Joi
 6.  project dockerized;
