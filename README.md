@@ -115,3 +115,11 @@ This application documentation can be access in the apidoc folder generated afte
 
 `` apidoc/index.html``
 ----------
+
+### Updates to be done
+
+-improve the UI
+-complete dockerization for the project
+-refactor the code 
+-complete the auth system
+-connect ci/cd and connect it to live server for easy test.
